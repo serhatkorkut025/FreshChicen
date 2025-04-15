@@ -7,12 +7,12 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: "com.PinnacleSportApp"
+        bundle_identifier: "com.FreshChikenApp"
       vars:
-        BUNDLE_ID: "com.PinnacleSportApp"
-        XCODE_PROJECT: "YourProjectName.xcodeproj"
-        XCODE_SCHEME: "Pinnacle"
-        APP_STORE_APPLE_ID: 6743162783
+        BUNDLE_ID: "com.FreshChikenApp"
+        XCODE_PROJECT: "FreshChiken.xcodeproj"
+        XCODE_SCHEME: "FreshChiken"
+        APP_STORE_APPLE_ID: 6744642950
       xcode: 16.0
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
