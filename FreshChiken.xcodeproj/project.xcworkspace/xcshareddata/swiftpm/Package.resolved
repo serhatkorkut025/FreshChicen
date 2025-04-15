@@ -1,0 +1,42 @@
+{
+  "originHash" : "7261e0caa3cd02db11a8de8c7e7d07c5601aa88bf930615067675974d18510c6",
+  "pins" : [
+    {
+      "identity" : "flagsmith-ios-client",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Flagsmith/flagsmith-ios-client.git",
+      "state" : {
+        "revision" : "56e62da513032f58aa85fd57a5eccd0288a0fd9e",
+        "version" : "3.8.1"
+      }
+    },
+    {
+      "identity" : "pushexpress-swift-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pushexpress/pushexpress-swift-sdk",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5c5bb30553adb1f4aedbdeb840497bcceb0445da"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "cccb3ca9e26ec452a29f2f0d4050d1e38b8a3d43",
+        "version" : "14.14.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "8cb364a6a63695df296f05b53f7c3f3b1dda6af3"
+      }
+    }
+  ],
+  "version" : 3
+}
