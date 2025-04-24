@@ -3,42 +3,49 @@ workflows:
     name: iOS Native
     max_build_duration: 120
     integrations:
-      app_store_connect: CodeMagic Api Key 
+      app_store_connect: CodeMagic Api Key
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: "com.FreshChikenApp"
+        bundle_identifier: "com.FreshChikenApp" # <-- Основной бандл
       vars:
         BUNDLE_ID: "com.FreshChikenApp"
+        PUSH_BUNDLE_ID: "com.FreshChikenApp.notificationsvc" # <-- Бандл для Push Notifications
         XCODE_PROJECT: "FreshChiken.xcodeproj"
-        XCODE_SCHEME: "FreshChiken"
-        APP_STORE_APPLE_ID: 6744642950
+        XCODE_SCHEME: "FreshChiken" # <-- Основная схема
+        PUSH_TARGET_SCHEME: "notificationsvc" # <-- Схема для Push Notifications
+        APP_STORE_APPLE_ID: 6744642950 # <-- ID приложения
       xcode: 16.0
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
         script: xcode-project use-profiles
       - name: Increment build number
         script: |
-          cd $CM_BUILD_DIR # Переходим в директорию сборки
+          cd $CM_BUILD_DIR
           # Получаем последний номер сборки из TestFlight
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          echo "Latest uploaded build number from App Store Connect: $LATEST_BUILD_NUMBER"
-          # Увеличиваем номер сборки на 1. Если сборок не было или номер некорректен, начинаем с 1.
-          if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ] || ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]] || [ "$LATEST_BUILD_NUMBER" -lt 1 ]; then
+          echo "Latest uploaded build number: $LATEST_BUILD_NUMBER"
+          # Увеличиваем номер сборки на 1. Если сборок не было, начинаем с 1.
+          if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ] || [ "$LATEST_BUILD_NUMBER" -lt 1 ]; then
             NEW_BUILD_NUMBER=1
           else
-            # Используем арифметическое выражение POSIX shell для инкремента
-            NEW_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+            NEW_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
           fi
-          echo "Setting new build number to: $NEW_BUILD_NUMBER"
-          # Устанавливаем новый номер сборки для всех таргетов в проекте (включая основной)
+          echo "Setting new build number: $NEW_BUILD_NUMBER"
+          # Устанавливаем новый номер сборки для всех таргетов в проекте
           agvtool new-version -all $NEW_BUILD_NUMBER
 
       - name: Build ipa for distribution (Main App)
         script: |
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" # Используем основную схему
+            --scheme "$XCODE_SCHEME"
+      - name: Build ipa for Push Notifications target (if applicable)
+        script: |
+          echo "Building Push Notification Service Extension..."
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$PUSH_TARGET_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -47,7 +54,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - eldigo02@gmail.com
+          - eldigo02@gmail.com # <-- Замени на свою почту
         notify:
           success: true
           failure: false

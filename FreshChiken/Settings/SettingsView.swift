@@ -15,7 +15,7 @@ struct SettingsView: View {
     
     @State private var isShareSheetShowing = false
     
-    private let appStoreID = "YOUR_APP_ID" // <-- !!! ВАЖНО: ЗАМЕНИТЬ !!!
+    private let appStoreID = "6744642950" 
     private var appStoreURL: URL? {
         URL(string: "https://apps.apple.com/app/id\(appStoreID)")
     }
@@ -105,7 +105,7 @@ struct SettingsView: View {
                 
                 Spacer()
                 
-                Text("Version 1.0")
+                Text("Version 1.0.1")
                     .font(.footnote)
                     .foregroundStyle(.white.opacity(0.7))
                     .padding(.bottom)
